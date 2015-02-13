@@ -17,8 +17,8 @@ class OrdersController < ApplicationController
   # GET /orders/new
   def new
     if @cart.line_items.empty?
-    redirect_to store_url, notice: "You have  no struggles"
-    return
+      redirect_to store_url, notice: "You have  no struggles"
+      return
     end
 
     @order = Order.new
@@ -38,7 +38,7 @@ class OrdersController < ApplicationController
       if @order.save
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
-        OrderNotifier.recieved(@order).deliver
+        OrderNotifier.received(@order).deliver
         format.html { redirect_to store_url, notice:
           'Thank you for Struggling.' }
         format.json { render action: 'show', status: :created,
