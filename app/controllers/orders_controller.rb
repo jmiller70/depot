@@ -17,8 +17,8 @@ class OrdersController < ApplicationController
   # GET /orders/new
   def new
     if @cart.line_items.empty?
-    redirect_to store_url, notice: "You have  no struggles"
-    return
+      redirect_to store_url, notice: "You have  no struggles"
+      return
     end
 
     @order = Order.new
