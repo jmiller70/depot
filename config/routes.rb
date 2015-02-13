@@ -13,7 +13,7 @@ Depot::Application.routes.draw do
       post 'login' => :create
       delete 'logout' => :destroy
     end
-  
+
 
   get 'sessions/create'
 
