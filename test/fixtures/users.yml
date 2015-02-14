@@ -6,4 +6,4 @@ one:
 
 two:
   name: miller
-  password_digest: <%= BCrypt::Password.create('secret') %>
+  password_digest: MyString
