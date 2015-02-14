@@ -1,7 +1,12 @@
 class ApplicationController < ActionController::Base
   before_action :authorize
   # Prevent CSRF attacks by raising an exception.
+<<<<<<< HEAD
   # For APIs, you may want to use :null_session instead
+=======
+  # For APIs, you may want to use :null_session instead.
+
+>>>>>>> development
   protected
 
   def authorize
