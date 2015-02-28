@@ -1,0 +1,1 @@
+<VirtualHost *:80>ServerName depot.yourhost.comDocumentRoot /home/rubys/deploy/depot/public/<Directory /home/rubys/deploy/depot/public>AllowOverride allOptions -MultiViewsOrder allow,denyAllow from all</Directory></VirtualHost>
