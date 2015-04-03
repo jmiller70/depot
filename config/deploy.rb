@@ -1,62 +1,48 @@
-#---
-# Excerpted from "Agile Web Development with Rails",
-# published by The Pragmatic Bookshelf.
-# Copyrights apply to this code. It may not be used to create training material,
-# courses, books, articles, and the like. Contact us if you are in doubt.
-# We make no guarantees that this code is fit for any purpose.
-# Visit http://www.pragmaticprogrammer.com/titles/rails4 for more book information.
-#---
-require 'bundler/capistrano'
+lock '3.1.0'
 
-# be sure to change these
-set :user, 'rubys'
-set :domain, 'depot.pragprog.com'
 set :application, 'depot'
+set :repo_url, 'git@github.com:jmiller70/depot.git'
+set :branch, "master"
+set :deploy_to, '/var/www/html/depot'
+set :scm, :git
+set :format, :pretty
+set :log_level, :debug
 
-# adjust if you are using RVM, remove if you are not
-set :rvm_type, :user
-set :rvm_ruby_string, 'ruby-2.0.0-p247'
-require 'rvm/capistrano'
+# Default value for :pty is false
+# set :pty, true
 
-# file paths
-set :repository,  "#{jmiller70}@#{github.com}:git/#{depot}.git"
-set :deploy_to, "/home/#{jmiller}/deploy/#{depot}"
+# Default value for :linked_files is []
+# set :linked_files, %w{config/database.yml}
 
-# distribute your applications across servers (the instructions below put them
-# all on the same server, defined above as 'domain', adjust as necessary)
-role :app, domain
-role :web, domain
-role :db, domain, :primary => true
+# Default value for linked_dirs is []
+# set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
-# you might need to set this if you aren't seeing password prompts
-# default_run_options[:pty] = true
+# Default value for default_env is {}
+set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
-# As Capistrano executes in a non-interactive mode and therefore doesn't cause
-# any of your shell profile scripts to be run, the following might be needed
-# if (for example) you have locally installed gems or applications.  Note:
-# this needs to contain the full values for the variables set, not simply
-# the deltas.
-# default_environment['PATH']='<your paths>:/usr/local/bin:/usr/bin:/bin'
-# default_environment['GEM_PATH']='<your paths>:/usr/lib/ruby/gems/1.8'
-
-# miscellaneous options
-set :deploy_via, :remote_cache
-set :scm, 'git'
-set :branch, 'master'
-set :scm_verbose, true
-set :use_sudo, false
-set :normalize_asset_timestamps, false
-set :rails_env, :production
+# Default value for keep_releases is 5
+set :keep_releases, 5
 
 namespace :deploy do
-  desc "cause Passenger to initiate a restart"
+
+  desc 'Restart Application'
   task :restart do
-    run "touch #{current_path}/tmp/restart.txt"
+    on roles(:app), in: :sequence, wait: 5 do
+      # Your restart mechanism here, for example:
+      execute :mkdir, '-p', "#{ release_path }/tmp"
+      execute :touch, release_path.join('tmp/restart.txt')
+    end
   end
 
-  desc "reload the database with seed data"
-  task :seed do
-    deploy.migrations
-    run "cd #{current_path}; rake db:seed RAILS_ENV=#{rails_env}"
+  after :publishing, :restart
+
+  after :restart, :clear_cache do
+    on roles(:web), in: :groups, limit: 3, wait: 10 do
+      # Here we can do anything such as:
+      # within release_path do
+      #   execute :rake, 'cache:clear'
+      # end
+    end
   end
+
 end
