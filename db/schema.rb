@@ -32,26 +32,26 @@ ActiveRecord::Schema.define(version: 20150203205639) do
   add_index "line_items", ["product_id"], name: "index_line_items_on_product_id"
 
   create_table "orders", force: :cascade do |t|
-    t.string   "name",       limit: 255
+    t.string   "name"
     t.text     "address"
-    t.string   "email",      limit: 255
-    t.string   "pay_type",   limit: 255
+    t.string   "email"
+    t.string   "pay_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "products", force: :cascade do |t|
-    t.string   "title",       limit: 255
+    t.string   "title"
     t.text     "description"
-    t.string   "image_url",   limit: 255
-    t.decimal  "price",                   precision: 8, scale: 2
+    t.string   "image_url"
+    t.decimal  "price",       precision: 8, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "name",            limit: 255
-    t.string   "password_digest", limit: 255
+    t.string   "name"
+    t.string   "password_digest"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
