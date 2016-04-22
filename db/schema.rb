@@ -13,12 +13,12 @@
 
 ActiveRecord::Schema.define(version: 20150203205639) do
 
-  create_table "carts", force: true do |t|
+  create_table "carts", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "line_items", force: true do |t|
+  create_table "line_items", force: :cascade do |t|
     t.integer  "product_id"
     t.integer  "cart_id"
     t.datetime "created_at"
@@ -31,27 +31,27 @@ ActiveRecord::Schema.define(version: 20150203205639) do
   add_index "line_items", ["order_id"], name: "index_line_items_on_order_id"
   add_index "line_items", ["product_id"], name: "index_line_items_on_product_id"
 
-  create_table "orders", force: true do |t|
-    t.string   "name"
+  create_table "orders", force: :cascade do |t|
+    t.string   "name",       limit: 255
     t.text     "address"
-    t.string   "email"
-    t.string   "pay_type"
+    t.string   "email",      limit: 255
+    t.string   "pay_type",   limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "products", force: true do |t|
-    t.string   "title"
+  create_table "products", force: :cascade do |t|
+    t.string   "title",       limit: 255
     t.text     "description"
-    t.string   "image_url"
-    t.decimal  "price",       precision: 8, scale: 2
+    t.string   "image_url",   limit: 255
+    t.decimal  "price",                   precision: 8, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "users", force: true do |t|
-    t.string   "name"
-    t.string   "password_digest"
+  create_table "users", force: :cascade do |t|
+    t.string   "name",            limit: 255
+    t.string   "password_digest", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
